@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <title>Luận văn thạc sĩ</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./img/logo.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script
+        src="https://api.map4d.vn/sdk/map/js?version=1.6.0&key=38445a500dacc4418a81f0d62669f7a2&callback=initMap"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="header">
+        <h5><b>BỘ LAO ĐỘNG THƯƠNG BINH VÀ XÃ HỘI</b></h5>
+        <h5><b>TRƯỜNG ĐẠI HỌC SƯ PHẠM KỸ THUẬT VĨNH LONG</b></h5>
+        <img src="./img/logo.png" alt="alternatetext" style="width:70px;height:70px;">
+        <h3><b>LUẬN VĂN THẠC SĨ - KỸ THUẬT ĐIỆN (KHÓA 3)</b></h3>
+        <h1>MỘT GIẢI PHÁP CẢNH BÁO TÌNH TRẠNG QUÁ NHIỆT MÁY BIẾN ÁP LỰC</h1>
+        <p><b>Cán bộ hướng dẫn:</b> TS. Nguyễn Văn Khanh</p>
+        <p><b>Học viên:</b> KS.Trần Quang Vinh</p>
+    </div>
+
+    <div class="navbar">
+        <a href="index.html" class="active">
+            <h4>Trang chủ</h4>
+        </a>
+        <a href="#" class="hover">
+            <h4></h4>
+        </a>
+        <a href="#" class="hover">
+
+        </a>
+        <a href="#" class="right">
+            <h4>Mã số: 22003040</h4>
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="side">
+            <h2>Trạng thái hệ thống</h2>
+            <h4 id="date_time"></h4><br>
+            <!-- <h4 id="notification">[Trạng thái]: Hệ thống đang hoạt động</h4> -->
+            <table id="customers" style="width:100%">
+                <tr>
+                    <th style="text-align: center;">Trạm số</th>
+                    <th style="text-align: center;">Cảm biến</th>
+                    <th style="text-align: center;">Nhiệt độ</th>
+                    <th style="text-align: center;">Trạng thái</th>
+                </tr>
+                <tr>
+                    <td style="text-align: center;" rowspan="2">&nbsp;<b>Trạm 1</b></td>
+                    <td style="text-align: center;">Cảm biến 1</td>
+                    <td id="temp11" style="text-align: center;"></td>
+                    <td id="note11"></td>
+                </tr>
+                <tr>
+                    <!-- <td style="text-align: center;"><b>Trạm 1</b></td> -->
+                    <td style="text-align: center;">Cảm biến 2</td>
+                    <td id="temp12" style="text-align: center;"></td>
+                    <td id="note12"></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;" rowspan="2">&nbsp;<b>Trạm 2</b></td>
+                    <td style="text-align: center;">Cảm biến 1</td>
+                    <td id="temp21" style="text-align: center;"></td>
+                    <td id="note21"></td>
+                </tr>
+                <tr>
+                    <!-- <td style="text-align: center;"><b>Trạm 2</b></td> -->
+                    <td style="text-align: center;">Cảm biến 2</td>
+                    <td id="temp22" style="text-align: center;"></td>
+                    <td id="note22"></td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;" rowspan="2">&nbsp;<b>Trạm 3</b></td>
+                    <td style="text-align: center;">Cảm biến 1</td>
+                    <td id="temp31" style="text-align: center;"></td>
+                    <td id="note31"></td>
+                </tr>
+                <tr>
+                    <!-- <td style="text-align: center;"><b>Trạm 3</b></td> -->
+                    <td style="text-align: center;">Cảm biến 2</td>
+                    <td id="temp32" style="text-align: center;"></td>
+                    <td id="note32"></td>
+                </tr>
+
+            </table>
+            <br>
+            <h4><b>Định vị hệ thống giám sát</b></h4>
+            <p>
+                <b>Trạm số 1: </b>Thành phố Bạc Liêu<br>
+                <b>Trạm số 2: </b>Thành phố Bạc Liêu<br>
+                <b>Trạm số 3: </b>Thành phố Bạc Liêu<br>
+            </p>
+            <div class="fakeimg" id="map" style="width: 100%; height: 250px; border: solid 1px black;"></div>
+            <br>
+            <h4>Thông tin hệ thống</h4>
+            <p style="text-align: justify;text-indent: 30px;">Máy biến áp là một thiết bị quan trọng trong ngành điện
+                nói chung và việc truyền tải điện năng nói riêng.</p>
+            <p style="text-align: justify;text-indent: 30px;">
+                Mục tiêu đề tài là thiết kế một hệ thống IoTs (Internet of Things)
+                có thể phát hiện sự cố xảy ra trên các máy biến áp lực dựa vào nhiệt độ hoạt động trên thân máy.
+                Để xây dụng hệ thống, trước tiên, một thiết bị đo nhiệt độ thân máy được thiết kế sử dụng cảm biến nhiệt
+                độ hồng ngoại
+                không tiếp xúc. Sau đó tiến hành thực nghiệm thu thập dữ liệu nhiệt độ thân máy và nhiệt độ hoạt động
+                của máy biến áp
+                để xây dựng phương trình tương quan giữa nhiệt độ thân máy và nhiệt độ thực tế máy biến áp. Từ phương
+                trình này giúp xác
+                định nhiệt độ máy biến áp thông qua nhiệt độ thân máy. </p>
+            <p style="text-align: justify;text-indent: 30px;">
+                Kế đến sử dụng dịch vụ AWS IoT Core của Amazon để
+                kết nối các thiết
+                bị đo và lưu trữ dữ liệu đo. Sau cùng là phát triển một ứng dụng web để giám sát và cảnh báo sự cố của
+                các máy biến áp.
+                Các kết quả thực nghiệm cho thấy thiết bị đo nhiệt độ có thể đo được nhiệt độ máy biến áp dựa trên nhiệt
+                độ của thân máy
+                với sai số 0,53%, ứng dụng web đã có thể giám sát nhiệt độ của các máy biến áp theo thời gian thực và
+                thực hiện cảnh báo
+                khi có sự cố xảy ra.<br>
+        </div>
+        <div class="main">
+            <h2>Dữ liệu quan trắc thời gian thực</h2>
+            <h3 id='station1'>Trạm số 1</h3>
+            <canvas id="chart1" style="width: 100%; height: 250px;"></canvas>
+            <p style="text-align: justify; text-indent: 30px;">
+            </p><br>
+            <h3 id='station2'>Trạm số 2</h3>
+            <canvas id="chart2" style="width: 100%; height: 250px;"></canvas>
+            <p style="text-align: justify; text-indent: 30px;">
+            </p><br>
+            <h3 id='station3'>Trạm số 3</h3>
+            <canvas id="chart3" style="width: 100%; height: 250px;"></canvas>
+            <p style="text-align: justify; text-indent: 30px;">
+            </p><br>
+            <div class="navbar" style=" text-align: center; font-size: 20px; padding: 7px; ">
+                <label for="dateoftem"></label>
+                <input type="date" name="dateoftem" id='datePicker'
+                    style="font-size: 18px; margin: 5px; border-radius: 5px;">
+                <select id="station" style="font-size: 16px; padding: 4px; border-radius: 5px;">
+                    <option value="1">Trạm số 1</option>
+                    <option value="2">Trạm số 2</option>
+                    <option value="3">Trạm số 3</option>
+                </select>
+                <button class="button" onclick="csv_click()">downlad .vcs</button>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <h2>ĐẠI HỌC SƯ PHẠM KỸ THUẬT VĨNH LONG</h2>
+        <p><i><b>Thực hiện đề tài: </b> KS.Trần Quang Vinh <b>Email:</b>vinhtranpcbl@gmail.com <b>Điện thoại:</b>0919
+                110979</i></p>
+
+    </div>
+</body>
+<script src="map.js"></script>
+<script src="script.js"></script>
+<script>
+    var chart1 = new Chart(document.getElementById('chart1'), config1);
+    var chart2 = new Chart(document.getElementById('chart2'), config2);
+    var chart3 = new Chart(document.getElementById('chart3'), config3);
+
+    var last_time = [];
+    window.onload = function () {
+        document.getElementById("datePicker").value = search_daytime();
+        initChart(1, chart1);
+        initChart(2, chart2);
+        initChart(3, chart3);
+        updateDateTime();
+        var loop = setInterval(function () {
+            updateChart(1, chart1);
+            updateChart(2, chart2);
+            updateChart(3, chart3);
+        }, 1000);
+        var timer = setInterval(function () {
+            updateDateTime();
+        }, 1000);
+    };
+</script>
+
+</html>
